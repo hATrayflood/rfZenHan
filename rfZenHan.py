@@ -26,6 +26,8 @@
 
 class rfZenHan:
 
+	rules = 8
+
 	# 変換ルール 通常は後述のプリセットを使うか、スタティックメソッドで直変換が望ましい。
 	# 全角から半角に変換する。
 	zNumber = 1
@@ -38,14 +40,14 @@ class rfZenHan:
 	zCIFS   = 1 << 7
 
 	# こちらは半角から全角に変換する。
-	hNumber = zNumber << 8 | zNumber
-	hSymbol = zSymbol << 8 | zSymbol
-	hAlpha  = zAlpha  << 8 | zAlpha
-	hKana   = zKana   << 8 | zKana
-	hKanaK  = zKanaK  << 8 | zKanaK
-	hKanaD  = zKanaD  << 8 | zKanaD
-	hCP932  = zCP932  << 8 | zCP932
-	hCIFS   = zCIFS   << 8 | zCIFS
+	hNumber = zNumber << rules | zNumber
+	hSymbol = zSymbol << rules | zSymbol
+	hAlpha  = zAlpha  << rules | zAlpha
+	hKana   = zKana   << rules | zKana
+	hKanaK  = zKanaK  << rules | zKanaK
+	hKanaD  = zKanaD  << rules | zKanaD
+	hCP932  = zCP932  << rules | zCP932
+	hCIFS   = zCIFS   << rules | zCIFS
 
 	# 変換テーブル 数字
 	zNumberL = [u"０", u"１", u"２", u"３", u"４", u"５", u"６", u"７", u"８", u"９"]
@@ -56,10 +58,10 @@ class rfZenHan:
 	# 変換テーブル ASCII記号
 	zSymbolL = [u"　", u"！", u"”", u"＃", u"＄", u"％", u"＆", u"’", u"（", u"）", u"＊"
 	          , u"＋", u"，", u"－", u"．", u"／", u"：", u"；", u"＜", u"＝", u"＞", u"？"
-	          , u"＠", u"［", u"￥", u"］", u"＾", u"＿", u"‘", u"｛", u"｜", u"｝", u"～"]
+	          , u"＠", u"［", u"￥", u"］", u"＾", u"＿", u"‘", u"｛", u"｜", u"｝"]
 	hSymbolL = [u" " , u"!" , u"\"", u"#" , u"$" , u"%" , u"&" , u"'" , u"(" , u")" , u"*"
 	          , u"+" , u"," , u"-" , u"." , u"/" , u":" , u";" , u"<" , u"=" , u">" , u"?"
-	          , u"@" , u"[" , u"\\", u"]" , u"^" , u"_" , u"`" , u"{" , u"|" , u"}" , u"~" ]
+	          , u"@" , u"[" , u"\\", u"]" , u"^" , u"_" , u"`" , u"{" , u"|" , u"}" ]
 	zSymbolB = {}
 	hSymbolB = {}
 
@@ -184,8 +186,8 @@ class rfZenHan:
 	hCP932B = {}
 
 	# 変換テーブル CIFS上で複数のOSからアクセスする際の安全性を考慮する。
-	zCIFSL = [u"／", u"￥", u"＊", u"？", u"：", u"＜", u"＞", u"｜", u"　"]
-	hCIFSL = [u"/" , u"\\", u"*" , u"?" , u":" , u"<" , u">" , u"|" , u" " ]
+	zCIFSL = [u"／", u"￥", u"＊", u"？", u"：", u"＜", u"＞", u"｜", u"_"]
+	hCIFSL = [u"/" , u"\\", u"*" , u"?" , u":" , u"<" , u">" , u"|" , u" "]
 	zCIFSB = {}
 	hCIFSB = {}
 
@@ -229,7 +231,7 @@ class rfZenHan:
 			# 変換ルールを検出して変換テーブルを作成します。
 			# 検出はビット単位のマッチングで行います。
 			if type & t:
-				if type & t << 8:
+				if type & t << self.rules:
 					fr = self.hTables[i]
 					to = self.zTables[i]
 					de = self.hDepths[i]
@@ -241,7 +243,6 @@ class rfZenHan:
 					a = fr[ci]
 					b = to[ci]
 					self.table[a] = b
-					reverse[b] = a
 					# 置換のループを排除します。
 					# "："=>":"があったときに":"=>"："が定義されたら
 					# "："=>":"の定義を削除します。
@@ -250,10 +251,15 @@ class rfZenHan:
 					# 置換の連鎖を探して単純化します。
 					# "ｶﾞ"=>"ガ"があったときに"ガ"=>"カ゛"が定義されたら
 					# "ｶﾞ"=>"カ゛"に再定義します。
+					if b not in reverse:
+						reverse[b] = []
+					reverse[b].append(a)
 					if a in reverse:
-						o = reverse[a]
-						self.table[o] = b
-						reverse[a] = b
+						for o in reverse[a]:
+							if o != b:
+								self.table[o] = b
+								reverse[b].append(o)
+						del reverse[a]
 				# 変換補助テーブルをセットします。
 				# 同一文字がある場合は深さが最大のものを選択します。
 				for di in de.keys():
@@ -435,7 +441,7 @@ def h2zCP932I():
 def h2zCP932(str):
 	return h2zCP932I().conv(str)
 
-# ファイルシステム上危険な文字に変換します。
+# ファイルシステム上、安全ではない文字に変換します。
 # ※あえてこれを使うよりは、normalize、z2h、z2hSymを使うべきでしょう。
 def z2hCIFSI():
 	return rfZenHan(rfZenHan.Z2HCIFS)
@@ -443,7 +449,7 @@ def z2hCIFSI():
 def z2hCIFS(str):
 	return z2hCIFSI().conv(str)
 
-# ファイルシステム上安全な文字に変換します。
+# ファイルシステム上、安全な文字に変換します。
 def h2zCIFSI():
 	return rfZenHan(rfZenHan.H2ZCIFS)
 
@@ -454,28 +460,50 @@ def h2zCIFS(str):
 if __name__ == "__main__":
 	str_h = u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
 	str_z = u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)："
+
+	print u" 012ABCabc!@#アイウガダパ(株):"
 	print normalize(str_h)
+	print u"_012ABCabc!@#アイウガダパ(株)："
 	print normalizeCIFS(str_h)
+	print u" ０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
 	print doshirouto(str_h)
 	print ""
 	print str_h
+	print u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱："
 	print h2z(str_h)
+	print u" ０１２ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
 	print h2zNum(str_h)
+	print u"　012ABCabc！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱："
 	print h2zSym(str_h)
+	print u" 012ＡＢＣａｂｃ!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
 	print h2zAlpha(str_h)
+	print u" 012ABCabc!@#アイウガダパ㈱:"
 	print h2zKana(str_h)
+	print u" 012ABCabc!@#アイウカ゛タ゛ハ゜㈱:"
 	print h2zKanaK(str_h)
+	print u" 012ABCabc!@#ｱｲｳガダパ㈱:"
 	print h2zKanaD(str_h)
+	print u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):"
 	print h2zCP932(str_h)
+	print u"_012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱："
 	print h2zCIFS(str_h)
 	print ""
 	print str_z
+	print u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):"
 	print z2h(str_z)
+	print u"　012ＡＢＣａｂｃ！＠＃アイウガダパ(株)："
 	print z2hNum(str_z)
+	print u" ０１２ＡＢＣａｂｃ!@#アイウガダパ(株):"
 	print z2hSym(str_z)
+	print u"　０１２ABCabc！＠＃アイウガダパ(株)："
 	print z2hAlpha(str_z)
+	print u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ(株)："
 	print z2hKana(str_z)
+	print u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳガダパ(株)："
 	print z2hKanaK(str_z)
+	print u"　０１２ＡＢＣａｂｃ！＠＃アイウｶﾞﾀﾞﾊﾟ(株)："
 	print z2hKanaD(str_z)
+	print u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱："
 	print z2hCP932(str_z)
+	print u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株):"
 	print z2hCIFS(str_z)
