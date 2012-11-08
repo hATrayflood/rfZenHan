@@ -9,16 +9,21 @@
 #   http://d.hatena.ne.jp/dayflower/20060530/1148951624
 #
 # 使い方：
-#  import rfZenHan
-#  print rfZenHan.h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
-#  print rfZenHan.z2h(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
-#  rfzh = rfZenHan(rfZenHan.NormalizeCIFS)
-#  print rfzh.conv(u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+u"""
+>>> import rfZenHan
+>>> print rfZenHan.h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱：
+>>> rfzh = rfZenHan.z2hI()
+>>> print rfzh.conv(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+ 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):
+>>> rfzh = rfZenHan.rfZenHan(rfZenHan.rfZenHan.NormalizeCIFS)
+>>> print rfzh.conv(u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+_012ABCabc!@#アイウガダパ(株)：
+"""
 #
 # 注意！：
 #  変換対象文字列はUnicode前提です。
 #  変換されてない場合は事前に変換して渡してください。
-#  例：
 #   # リテラルの場合は""の前にuをつける。
 #   print rfZenHan.h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
 #   # それ以外はunicode()関数で変換する。
@@ -298,6 +303,10 @@ def normalizeI():
 	return rfZenHan(rfZenHan.Normalize)
 
 def normalize(str):
+	u"""
+	>>> print normalize(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 012ABCabc!@#アイウガダパ(株):
+	"""
 	return normalizeI().conv(str)
 
 # normalizeに加えて、ファイルシステム上安全な文字に変換します。
@@ -305,6 +314,10 @@ def normalizeCIFSI():
 	return rfZenHan(rfZenHan.NormalizeCIFS)
 
 def normalizeCIFS(str):
+	u"""
+	>>> print normalizeCIFS(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	_012ABCabc!@#アイウガダパ(株)：
+	"""
 	return normalizeCIFSI().conv(str)
 
 # お願いですからやめてください。
@@ -312,6 +325,10 @@ def doshiroutoI():
 	return rfZenHan(rfZenHan.Doshirouto)
 
 def doshirouto(str):
+	u"""
+	>>> print doshirouto(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 ０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱:
+	"""
 	return doshiroutoI().conv(str)
 
 # 英数記号カナを半角に変換します。
@@ -320,6 +337,10 @@ def z2hI():
 	return rfZenHan(rfZenHan.Z2H)
 
 def z2h(str):
+	u"""
+	>>> print z2h(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):
+	"""
 	return z2hI().conv(str)
 
 # 英数記号カナを全角に変換します。
@@ -328,6 +349,10 @@ def h2zI():
 	return rfZenHan(rfZenHan.H2Z)
 
 def h2z(str):
+	u"""
+	>>> print h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱：
+	"""
 	return h2zI().conv(str)
 
 # 数字を半角に変換します。
@@ -336,6 +361,10 @@ def z2hNumI():
 	return rfZenHan(rfZenHan.Z2HNum)
 
 def z2hNum(str):
+	u"""
+	>>> print z2hNum(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	　012ＡＢＣａｂｃ！＠＃アイウガダパ(株)：
+	"""
 	return z2hNumI().conv(str)
 
 # 数字を全角に変換します。
@@ -344,6 +373,10 @@ def h2zNumI():
 	return rfZenHan(rfZenHan.H2ZNum)
 
 def h2zNum(str):
+	u"""
+	>>> print h2zNum(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 ０１２ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:
+	"""
 	return h2zNumI().conv(str)
 
 # ASCII記号を半角に変換します。
@@ -352,6 +385,10 @@ def z2hSymI():
 	return rfZenHan(rfZenHan.Z2HSym)
 
 def z2hSym(str):
+	u"""
+	>>> print z2hSym(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	 ０１２ＡＢＣａｂｃ!@#アイウガダパ(株):
+	"""
 	return z2hSymI().conv(str)
 
 # ASCII記号を全角に変換します。
@@ -360,6 +397,10 @@ def h2zSymI():
 	return rfZenHan(rfZenHan.H2ZSym)
 
 def h2zSym(str):
+	u"""
+	>>> print h2zSym(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	　012ABCabc！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱：
+	"""
 	return h2zSymI().conv(str)
 
 # アルファベットを半角に変換します。
@@ -368,6 +409,10 @@ def z2hAlphaI():
 	return rfZenHan(rfZenHan.Z2HAlpha)
 
 def z2hAlpha(str):
+	u"""
+	>>> print z2hAlpha(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	　０１２ABCabc！＠＃アイウガダパ(株)：
+	"""
 	return z2hAlphaI().conv(str)
 
 # アルファベットを全角に変換します。
@@ -376,6 +421,10 @@ def h2zAlphaI():
 	return rfZenHan(rfZenHan.H2ZAlpha)
 
 def h2zAlpha(str):
+	u"""
+	>>> print h2zAlpha(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 012ＡＢＣａｂｃ!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:
+	"""
 	return h2zAlphaI().conv(str)
 
 # カナを半角に変換します。
@@ -384,6 +433,10 @@ def z2hKanaI():
 	return rfZenHan(rfZenHan.Z2HKana)
 
 def z2hKana(str):
+	u"""
+	>>> print z2hKana(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	　０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ(株)：
+	"""
 	return z2hKanaI().conv(str)
 
 # カナを全角に変換します。
@@ -392,6 +445,10 @@ def h2zKanaI():
 	return rfZenHan(rfZenHan.H2ZKana)
 
 def h2zKana(str):
+	u"""
+	>>> print h2zKana(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 012ABCabc!@#アイウガダパ㈱:
+	"""
 	return h2zKanaI().conv(str)
 
 # カナを半角に変換します。濁点・半濁点のつく文字は全角に変換します。
@@ -400,6 +457,10 @@ def z2hKanaKI():
 	return rfZenHan(rfZenHan.Z2HKanaK)
 
 def z2hKanaK(str):
+	u"""
+	>>> print z2hKanaK(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	　０１２ＡＢＣａｂｃ！＠＃ｱｲｳガダパ(株)：
+	"""
 	return z2hKanaKI().conv(str)
 
 # カナを全角に変換します。濁点・半濁点を分離します。
@@ -408,6 +469,10 @@ def h2zKanaKI():
 	return rfZenHan(rfZenHan.H2ZKanaK)
 
 def h2zKanaK(str):
+	u"""
+	>>> print h2zKanaK(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 012ABCabc!@#アイウカ゛タ゛ハ゜㈱:
+	"""
 	return h2zKanaKI().conv(str)
 
 # 濁点・半濁点のつくカナのみ半角に変換します。
@@ -416,6 +481,10 @@ def z2hKanaDI():
 	return rfZenHan(rfZenHan.Z2HKanaD)
 
 def z2hKanaD(str):
+	u"""
+	>>> print z2hKanaD(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	　０１２ＡＢＣａｂｃ！＠＃アイウｶﾞﾀﾞﾊﾟ(株)：
+	"""
 	return z2hKanaDI().conv(str)
 
 # 濁点・半濁点のつくカナのみ全角に変換します。
@@ -424,6 +493,10 @@ def h2zKanaDI():
 	return rfZenHan(rfZenHan.H2ZKanaD)
 
 def h2zKanaD(str):
+	u"""
+	>>> print h2zKanaD(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 012ABCabc!@#ｱｲｳガダパ㈱:
+	"""
 	return h2zKanaDI().conv(str)
 
 # cp932特殊文字に変換します。
@@ -432,6 +505,10 @@ def z2hCP932I():
 	return rfZenHan(rfZenHan.Z2HCP932)
 
 def z2hCP932(str):
+	u"""
+	>>> print z2hCP932(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱：
+	"""
 	return z2hCP932I().conv(str)
 
 # cp932特殊文字を一般化します。
@@ -439,6 +516,10 @@ def h2zCP932I():
 	return rfZenHan(rfZenHan.H2ZCP932)
 
 def h2zCP932(str):
+	u"""
+	>>> print h2zCP932(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):
+	"""
 	return h2zCP932I().conv(str)
 
 # ファイルシステム上、安全ではない文字に変換します。
@@ -447,6 +528,10 @@ def z2hCIFSI():
 	return rfZenHan(rfZenHan.Z2HCIFS)
 
 def z2hCIFS(str):
+	u"""
+	>>> print z2hCIFS(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+	　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株):
+	"""
 	return z2hCIFSI().conv(str)
 
 # ファイルシステム上、安全な文字に変換します。
@@ -454,56 +539,12 @@ def h2zCIFSI():
 	return rfZenHan(rfZenHan.H2ZCIFS)
 
 def h2zCIFS(str):
+	u"""
+	>>> print h2zCIFS(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+	_012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱：
+	"""
 	return h2zCIFSI().conv(str)
 
-# テストメソッド
 if __name__ == "__main__":
-	str_h = u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
-	str_z = u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)："
-
-	print u" 012ABCabc!@#アイウガダパ(株):"
-	print normalize(str_h)
-	print u"_012ABCabc!@#アイウガダパ(株)："
-	print normalizeCIFS(str_h)
-	print u" ０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
-	print doshirouto(str_h)
-	print ""
-	print str_h
-	print u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱："
-	print h2z(str_h)
-	print u" ０１２ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
-	print h2zNum(str_h)
-	print u"　012ABCabc！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱："
-	print h2zSym(str_h)
-	print u" 012ＡＢＣａｂｃ!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:"
-	print h2zAlpha(str_h)
-	print u" 012ABCabc!@#アイウガダパ㈱:"
-	print h2zKana(str_h)
-	print u" 012ABCabc!@#アイウカ゛タ゛ハ゜㈱:"
-	print h2zKanaK(str_h)
-	print u" 012ABCabc!@#ｱｲｳガダパ㈱:"
-	print h2zKanaD(str_h)
-	print u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):"
-	print h2zCP932(str_h)
-	print u"_012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱："
-	print h2zCIFS(str_h)
-	print ""
-	print str_z
-	print u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):"
-	print z2h(str_z)
-	print u"　012ＡＢＣａｂｃ！＠＃アイウガダパ(株)："
-	print z2hNum(str_z)
-	print u" ０１２ＡＢＣａｂｃ!@#アイウガダパ(株):"
-	print z2hSym(str_z)
-	print u"　０１２ABCabc！＠＃アイウガダパ(株)："
-	print z2hAlpha(str_z)
-	print u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ(株)："
-	print z2hKana(str_z)
-	print u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳガダパ(株)："
-	print z2hKanaK(str_z)
-	print u"　０１２ＡＢＣａｂｃ！＠＃アイウｶﾞﾀﾞﾊﾟ(株)："
-	print z2hKanaD(str_z)
-	print u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱："
-	print z2hCP932(str_z)
-	print u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株):"
-	print z2hCIFS(str_z)
+	import doctest
+	doctest.testmod()

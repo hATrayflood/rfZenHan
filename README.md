@@ -11,22 +11,24 @@ http://d.hatena.ne.jp/dayflower/20060530/1148951624
 
 使い方
 ------
-    import rfZenHan
-    print rfZenHan.h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
-    print rfZenHan.z2h(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
-    rfzh = rfZenHan(rfZenHan.NormalizeCIFS)
-    print rfzh.conv(u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+    >>> import rfZenHan
+    >>> print rfZenHan.h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+    　０１２ＡＢＣａｂｃ！＠＃アイウガダパ㈱：
+    >>> rfzh = rfZenHan.z2hI()
+    >>> print rfzh.conv(u"　０１２ＡＢＣａｂｃ！＠＃アイウガダパ(株)：")
+     012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ(株):
+    >>> rfzh = rfZenHan.rfZenHan(rfZenHan.rfZenHan.NormalizeCIFS)
+    >>> print rfzh.conv(u"　０１２ＡＢＣａｂｃ！＠＃ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+    _012ABCabc!@#アイウガダパ(株)：
 
 注意！
 ------
 変換対象文字列はUnicode前提です。  
 変換されてない場合は事前に変換して渡してください。  
-例：
-
-    # リテラルの場合は""の前にuをつける。
-    print rfZenHan.h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
-    # それ以外はunicode()関数で変換する。
-    print rfZenHan.h2z(unicode(utf8str, "utf-8"))
+    >>> # リテラルの場合は""の前にuをつける。
+    >>> print rfZenHan.h2z(u" 012ABCabc!@#ｱｲｳｶﾞﾀﾞﾊﾟ㈱:")
+    >>> # それ以外はunicode()関数で変換する。
+    >>> print rfZenHan.h2z(unicode(utf8str, "utf-8"))
 
 github
 ------
