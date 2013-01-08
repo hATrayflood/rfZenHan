@@ -1,0 +1,18 @@
+Source: python-rfzenhan
+Section: python
+Priority: extra
+Maintainer: ABE Hiroki (hATrayflood) <h.rayflood@gmail.com>
+Build-Depends: debhelper, python
+Standards-Version: 3.8.4
+Homepage: https://github.com/hATrayflood/rfZenHan
+
+Package: python-rfzenhan
+Architecture: all
+Depends: ${misc:Depends}
+Description: 全角半角その他を変換するライブラリです。
+ 文字種別ごとに全角半角を変換できる。
+ cp932(Windows-31J)の特殊文字を一般化できる。
+ ファイルシステム上安全な文字に変換できる。
+ 個別に変換ルールを設定することで、英数記号は半角、カナは全角といった変換が一発で可能。
+ PerlのライブラリUnicode::Japaneseの全角半角変換メソッド互換。
+ http://d.hatena.ne.jp/dayflower/20060530/1148951624
