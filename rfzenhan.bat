@@ -25,5 +25,11 @@ if %ERRORLEVEL% equ 0 (
 set PYTHON=%_PYTHON%
 )
 
+set _PYTHON=%~dp0\..\python
+%_PYTHON% --version >nul 2>nul
+if %ERRORLEVEL% equ 0 (
+set PYTHON=%_PYTHON%
+)
+
 %PYTHON% %~dp0\rfZenHanCmd.py %*
 @endlocal
