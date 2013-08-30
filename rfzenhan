@@ -1,6 +1,10 @@
 #!/bin/sh
 
+PARENT=`dirname $0`
+PYTHON=`which $PARENT/python`
+if test -z "$PYTHON" ; then
 PYTHON=`which python2.7`
+fi
 if test -z "$PYTHON" ; then
 PYTHON=`which python2.6`
 fi
@@ -11,5 +15,5 @@ if test -z "$PYTHON" ; then
 PYTHON=`which python`
 fi
 
-$PYTHON `dirname $0`/rfZenHanCmd.py $*
+$PYTHON $PARENT/rfZenHanCmd.py $*
 exit $?
