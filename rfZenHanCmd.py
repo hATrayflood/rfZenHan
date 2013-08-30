@@ -26,7 +26,7 @@ converters['z2hCIFS']       = rfZenHan.z2hCIFSI
 converters['h2zCIFS']       = rfZenHan.h2zCIFSI
 
 parser = optparse.OptionParser(usage='Usage: rfZenHan [options] [files]')
-parser.add_option('-e', '--encode', dest='encode', default='utf8', help='input text encoding. (default: utf8)')
+parser.add_option('-e', '--encode', dest='encode', default=sys.stdin.encoding, help='input text encoding.')
 parser.add_option('-c', '--converter', dest='converter', default='normalize', help='convert method. (default: normalize) value: ' + ' '.join(sorted(converters.keys())))
 (options, args) = parser.parse_args()
 
@@ -40,4 +40,4 @@ else:
 rfzh = converters[options.converter]()
 for i in range(len(inputs)):
 	text = unicode(inputs[i].read(), options.encode)
-	sys.stdout.write(rfzh.conv(text))
+	sys.stdout.write(rfzh.conv(text).encode(sys.stdout.encoding))
