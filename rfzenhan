@@ -1,0 +1,15 @@
+#!/bin/sh
+
+PYTHON=`which python2.7`
+if test -z "$PYTHON" ; then
+PYTHON=`which python2.6`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which python2.5`
+fi
+if test -z "$PYTHON" ; then
+PYTHON=`which python`
+fi
+
+$PYTHON `dirname $0`/rfZenHanCmd.py $*
+exit $?
