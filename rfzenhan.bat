@@ -1,35 +1,29 @@
 @setlocal
 @echo off
 
-set _PYTHON=python
-%_PYTHON% --version >nul 2>nul
-if %ERRORLEVEL% equ 0 (
-set PYTHON=%_PYTHON%
-)
+"%PYTHON%" --version >nul 2>nul
+if %ERRORLEVEL% equ 0 goto run
 
-set _PYTHON=python2.5
-%_PYTHON% --version >nul 2>nul
-if %ERRORLEVEL% equ 0 (
-set PYTHON=%_PYTHON%
-)
+set PYTHON=%~dp0\..\python
+"%PYTHON%" --version >nul 2>nul
+if %ERRORLEVEL% equ 0 goto run
 
-set _PYTHON=python2.6
-%_PYTHON% --version >nul 2>nul
-if %ERRORLEVEL% equ 0 (
-set PYTHON=%_PYTHON%
-)
+set PYTHON=python2.7
+"%PYTHON%" --version >nul 2>nul
+if %ERRORLEVEL% equ 0 goto run
 
-set _PYTHON=python2.7
-%_PYTHON% --version >nul 2>nul
-if %ERRORLEVEL% equ 0 (
-set PYTHON=%_PYTHON%
-)
+set PYTHON=python2.6
+"%PYTHON%" --version >nul 2>nul
+if %ERRORLEVEL% equ 0 goto run
 
-set _PYTHON=%~dp0\..\python
-%_PYTHON% --version >nul 2>nul
-if %ERRORLEVEL% equ 0 (
-set PYTHON=%_PYTHON%
-)
+set PYTHON=python2.5
+"%PYTHON%" --version >nul 2>nul
+if %ERRORLEVEL% equ 0 goto run
 
+set PYTHON=python
+"%PYTHON%" --version >nul 2>nul
+if %ERRORLEVEL% equ 0 goto run
+
+:run
 %PYTHON% %~dp0\rfZenHanCmd.py %*
 @endlocal
