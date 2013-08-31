@@ -1,3 +1,9 @@
+python-rfzenhan (0.4-0nmu1ppa1~@@SERIES@@) @@SERIES@@; urgency=low
+
+  * add command line tools.
+
+ -- ABE Hiroki (hATrayflood) <h.rayflood@gmail.com>  Sat, 31 Aug 2013 19:00:00 +0900
+
 python-rfzenhan (0.3.1-0nmu1ppa1~@@SERIES@@) @@SERIES@@; urgency=low
 
   * ppa for @@SERIES@@
