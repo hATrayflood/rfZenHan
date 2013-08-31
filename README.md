@@ -1,6 +1,6 @@
 rfZenHan
 ========
-http://rayflood.org/diary-temp/rfZenHan-0.3.zip  
+http://rayflood.org/diary-temp/rfZenHan-0.4.zip  
 rfZenHan.py 全角半角その他を変換するライブラリです。
 * 文字種別ごとに全角半角を変換できる。
 * cp932(Windows-31J)の特殊文字を一般化できる。
@@ -35,9 +35,18 @@ http://d.hatena.ne.jp/dayflower/20060530/1148951624
     >>> # それ以外はunicode()関数で変換する。
     >>> print rfZenHan.h2z(unicode(utf8str, "utf-8"))
 
+コマンドラインツール
+--------------------
+rfzenhan コマンドが使えます。  
+標準入力またはファイルから読み込んで変換処理を行います。  
+
 github
 ------
 https://github.com/hATrayflood/rfZenHan
+
+launchpad
+---------
+https://launchpad.net/~h-rayflood/+archive/python2
 
 License
 -------
