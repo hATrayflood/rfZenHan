@@ -28,5 +28,5 @@ if test -z "$PYTHON" ; then
 PYTHON=`which python`
 fi
 
-echo $PYTHON $PARENT/rfZenHanCmd.py $*
+$PYTHON $PARENT/rfZenHanCmd.py $*
 exit $?
