@@ -1,6 +1,9 @@
 #!/bin/sh
 
 PARENT=`dirname $0`
+if test "$PYTHON" ; then
+PYTHON=`which $PYTHON`
+fi
 
 if test -z "$PYTHON" ; then
 PYTHON=`which $PARENT/python2.7`
