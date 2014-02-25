@@ -1,6 +1,6 @@
 rfZenHan
 ========
-http://rayflood.org/diary-temp/rfZenHan-0.4.zip  
+https://pypi.python.org/packages/source/r/rfZenHan/rfZenHan-0.4.zip  
 rfZenHan.py 全角半角その他を変換するライブラリです。
 * 文字種別ごとに全角半角を変換できる。
 * cp932(Windows-31J)の特殊文字を一般化できる。
@@ -43,6 +43,10 @@ rfzenhan コマンドが使えます。
 github
 ------
 https://github.com/hATrayflood/rfZenHan
+
+pypi
+----
+https://pypi.python.org/pypi/rfZenHan
 
 launchpad
 ---------
